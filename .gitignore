@@ -10,3 +10,4 @@ node_modules
 docs.py
 templates
 .DS_Store
+package-lock.json

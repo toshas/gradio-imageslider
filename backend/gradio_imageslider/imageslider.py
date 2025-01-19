@@ -206,14 +206,13 @@ class ImageSlider(Component):
             )
         )
 
-    def as_example(self, input_data: tuple[str | Path | None] | None) -> str:
+    def process_example(self, input_data: tuple[str | Path | None] | None) -> str:
         if input_data is None:
             return None
         input_data = (str(input_data[0]), str(input_data[1]))
-        # If an externally hosted image or a URL, don't convert to absolute path
         if self.proxy_url or client_utils.is_http_url_like(input_data[0]):
-            return input_data
-        return (str(utils.abspath(input_data[0])), str(utils.abspath(input_data[1])))
+            return input_data[0]
+        return (self.move_resource_to_block_cache(input_data[0]), self.move_resource_to_block_cache(input_data[1]))
 
     def example_inputs(self) -> Any:
         return "https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png"
